@@ -1,0 +1,34 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "stock-tick-producer-avro"
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      # Schema Registry Connection parameter
+      schema.registry.url: http://localhost:8081
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      client-id: ${spring.application.name}
+      properties:
+        enable.idempotence: true
+
+stockTick:
+  producer:
+    # Mimic the stock exchange create a random stock tick every configured milliseconds
+    rateInMs: 1000
+
+# Open up all Spring Boot Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always

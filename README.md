@@ -68,9 +68,8 @@ unset JMX_PORT
 
 ### Publish the poison pill ;)
 
-💊The console is waiting for input. Now publish the poision pill:
+The console is waiting for input. Now publish the poision pill:
 
 ```
 💊
 ```
-💊

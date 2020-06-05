@@ -13,10 +13,10 @@ Using:
 
 ## Project modules and applications
 
-| Application                                   | Port | Avro  | Topic(s)         | Description                                                            |
-|-----------------------------------------------|------|-------|------------------|------------------------------------------------------------------------|
-| stock-tick-producer-avro                      | 8080 | YES   | stock-ticks-avro | Simple producer of random stock ticks using Spring Kafka & Apache Avro |
-| stock-tick-consumer-avro                      | 8082 | YES   | stock-ticks-avro | Simple consumer of stock ticks using using Spring Kafka & Apache Avro  |
+| Application                                   | Port | Avro  | Topic(s)          | Description                                                            |
+|-----------------------------------------------|------|-------|-------------------|------------------------------------------------------------------------|
+| stock-quote-producer-avro                      | 8080 | YES  | stock-quotes-avro | Simple producer of random stock quotes using Spring Kafka & Apache Avro |
+| stock-quote-consumer-avro                      | 8082 | YES  | stock-quotes-avro | Simple consumer of stock quotes using using Spring Kafka & Apache Avro  |
 
 Note Confluent Schema Registry is running on port: `8081` using Docker. 
 
@@ -26,9 +26,9 @@ The goal of this example project is to show how protect your Kafka application a
 
 This example project has 3 different branches:
 
-* `master` : no configuration to protect the consumer application (`stock-tick-consumer-avro`) against the poison pill scenario.
-* TODO : configuration to protect the consumer application (`stock-tick-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
-* TODO : configuration to protect the consumer application (`stock-tick-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-ticks-avro.DLT` and continue consuming.
+* `master` : no configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario.
+* TODO : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
+* TODO : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-quotes-avro.DLT` and continue consuming.
 
 ## Compile to the project
 
@@ -56,16 +56,16 @@ docker-compose ps
 
 ### Start both producer and consumer
 
-* Spring Boot application: `stock-tick-producer-avro`
+* Spring Boot application: `stock-quote-producer-avro`
 
 ```
-java -jar stock-tick-producer-avro/target/stock-tick-producer-avro-0.0.1-SNAPSHOT.jar
+java -jar stock-quote-producer-avro/target/stock-quote-producer-avro-0.0.1-SNAPSHOT.jar
 ```
 
-* Spring Boot application: `stock-tick-consumer-avro`
+* Spring Boot application: `stock-quote-consumer-avro`
 
 ```
-java -jar stock-tick-consumer-avro/target/stock-tick-consumer-avro-0.0.1-SNAPSHOT.jar
+java -jar stock-quote-consumer-avro/target/stock-quote-consumer-avro-0.0.1-SNAPSHOT.jar
 ```
 
 ### Attach to Kafka
@@ -119,7 +119,7 @@ Caused by: java.net.BindException: Address already in use (Bind failed)
 ### Start the Kafka console producer from the command line
 
 ```
-./usr/bin/kafka-console-producer --broker-list localhost:9092 --topic stock-ticks-avro
+./usr/bin/kafka-console-producer --broker-list localhost:9092 --topic stock-quotes-avro
 ```
 
 ### Publish the poison pill ;)
@@ -145,7 +145,7 @@ java.lang.IllegalStateException: This error handler cannot process 'Serializatio
         at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515) ~[na:na]
         at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
         at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
-Caused by: org.apache.kafka.common.errors.SerializationException: Error deserializing key/value for partition stock-ticks-avro-1 at offset 69. If needed, please seek past the record to continue consumption.
+Caused by: org.apache.kafka.common.errors.SerializationException: Error deserializing key/value for partition stock-quotes-avro-1 at offset 69. If needed, please seek past the record to continue consumption.
 Caused by: org.apache.kafka.common.errors.SerializationException: Unknown magic byte!
 ```
 

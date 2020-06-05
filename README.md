@@ -1,6 +1,6 @@
 # Spring Kafka beyond the basics - Poison Pill
 
-Example project used for Conference talk and Confluent Blogpost.
+Example project used for Conference talk and Confluent blog post.
 
 Using:
 

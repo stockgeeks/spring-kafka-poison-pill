@@ -32,7 +32,7 @@ This example project has 3 different branches:
 
 * `master` : no configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario.
 * `handle-poison-pill-log-and-continue-consuming` : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
-* TODO : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-quotes-avro.DLT` and continue consuming.
+* `handle-poison-pill-dead-letter-topic-and-continue-consuming` : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-quotes-avro.DLT` and continue consuming.
 
 ## Compile to the project
 
@@ -188,6 +188,11 @@ spring:
 
 ### Publish poison pill(s) a dead letter topic and continue consuming
 
-```
+By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` in combination
+with both the `org.springframework.kafka.listener.DeadLetterPublishingRecoverer` and `org.springframework.kafka.listener.SeekToCurrentErrorHandler` 
 
+Branch: 
+
+```
+git checkout handle-poison-pill-dead-letter-topic-and-continue-consuming
 ```

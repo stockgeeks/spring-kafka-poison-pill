@@ -13,12 +13,16 @@ Using:
 
 ## Project modules and applications
 
-| Application                                   | Port | Avro  | Topic(s)          | Description                                                            |
-|-----------------------------------------------|------|-------|-------------------|------------------------------------------------------------------------|
-| stock-quote-producer-avro                      | 8080 | YES  | stock-quotes-avro | Simple producer of random stock quotes using Spring Kafka & Apache Avro |
-| stock-quote-consumer-avro                      | 8082 | YES  | stock-quotes-avro | Simple consumer of stock quotes using using Spring Kafka & Apache Avro  |
+| Applications                                  | Port | Avro  | Topic(s)          | Description                                                              |
+|-----------------------------------------------|------|-------|-------------------|--------------------------------------------------------------------------|
+| stock-quote-producer-avro                     | 8080 | YES  | stock-quotes-avro  | Simple producer of random stock quotes using Spring Kafka & Apache Avro. |
+| stock-quote-consumer-avro                     | 8082 | YES  | stock-quotes-avro  | Simple consumer of stock quotes using using Spring Kafka & Apache Avro.  |
 
-Note Confluent Schema Registry is running on port: `8081` using Docker. 
+| Module                                   | Description                                                             |
+|------------------------------------------|-------------------------------------------------------------------------|
+| stock-quote-avro-model                   | Holds the Avro schema for the Stock Quote including `avro-maven-plugin` to generate Java code based on the Avro Schema. This module is used by both the producer and consumer application.  |
+
+Note Confluent Schema Registry is running on port: `8081` using Docker (see [docker-compose.yml](docker-compose.yml). 
 
 ## Goal
 

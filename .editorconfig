@@ -1,0 +1,8 @@
+# Cross IDE code style configuration
+# * General info: http://EditorConfig.org
+# * Intellij info: https://www.jetbrains.com/idea/help/configuring-code-style.html
+
+root = true
+
+indent_style = space
+indent_size = 2

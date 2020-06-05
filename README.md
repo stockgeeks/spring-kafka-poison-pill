@@ -22,7 +22,7 @@ Using:
 |------------------------------------------|-------------------------------------------------------------------------|
 | stock-quote-avro-model                   | Holds the Avro schema for the Stock Quote including `avro-maven-plugin` to generate Java code based on the Avro Schema. This module is used by both the producer and consumer application.  |
 
-Note Confluent Schema Registry is running on port: `8081` using Docker (see [docker-compose.yml](docker-compose.yml). 
+Note Confluent Schema Registry is running on port: `8081` using Docker see: [docker-compose.yml](docker-compose.yml). 
 
 ## Goal
 
@@ -165,7 +165,7 @@ Depending on your use case you have different options.
 
 By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` 
 
-Branch:
+Branch with complete example: 
 
 ```
 git checkout handle-poison-pill-log-and-continue-consuming
@@ -191,7 +191,7 @@ spring:
 By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` in combination
 with both the `org.springframework.kafka.listener.DeadLetterPublishingRecoverer` and `org.springframework.kafka.listener.SeekToCurrentErrorHandler` 
 
-Branch: 
+Branch with complete example: 
 
 ```
 git checkout handle-poison-pill-dead-letter-topic-and-continue-consuming

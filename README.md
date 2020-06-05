@@ -27,7 +27,7 @@ The goal of this example project is to show how protect your Kafka application a
 This example project has 3 different branches:
 
 * `master` : no configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario.
-* TODO : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
+* `handle-poison-pill-log-and-continue-consuming` : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
 * TODO : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-quotes-avro.DLT` and continue consuming.
 
 ## Compile to the project
@@ -159,10 +159,27 @@ Depending on your use case you have different options.
 
 ### Log the poison pill(s) and continue consuming
 
+By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` 
+
 Branch:
 
 ```
+git checkout handle-poison-pill-log-and-continue-consuming
+```
 
+Configuration of the Consumer Application (`application.yml`) to configure the: ErrorHandlingDeserializer 
+
+```yml
+spring:
+  kafka:
+    consumer:
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+    properties:
+      # Delegate deserializers
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+      spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 ```
 
 ### Publish poison pill(s) a dead letter topic and continue consuming

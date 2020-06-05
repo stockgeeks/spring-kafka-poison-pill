@@ -8,8 +8,9 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      # Configures the Spring Kafka ErrorHandlingDeserializer that delegates to the 'real' deserializers
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       client-id: ${spring.application.name}
       group-id: ${spring.application.name}-group
       auto-offset-reset: earliest
@@ -18,6 +19,9 @@ spring:
       # Tells Kafka / Schema Registry that we will be using a specific Avro type
       # (StockQuote type in this case) otherwise Kafka will expect GenericRecord to be used on the topic.
       specific.avro.reader: true
+      # Delegate deserializers
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+      spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 
     # At application startup a missing topic on the broker will not fail the
     # application startup

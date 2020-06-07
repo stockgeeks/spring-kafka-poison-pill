@@ -186,7 +186,7 @@ spring:
       spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 ```
 
-### Publish poison pill(s) a dead letter topic and continue consuming
+### Publish poison pill(s) to a dead letter topic and continue consuming
 
 By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` in combination
 with both the `org.springframework.kafka.listener.DeadLetterPublishingRecoverer` and `org.springframework.kafka.listener.SeekToCurrentErrorHandler` 

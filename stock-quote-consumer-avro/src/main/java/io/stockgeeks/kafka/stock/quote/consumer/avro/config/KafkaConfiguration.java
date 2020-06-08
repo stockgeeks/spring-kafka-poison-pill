@@ -46,9 +46,7 @@ public class KafkaConfiguration {
    */
   @Bean
   public DeadLetterPublishingRecoverer publisher(KafkaTemplate<?, ?> bytesTemplate) {
-    Map<Class<?>, KafkaOperations<?, ?>> templates = new LinkedHashMap<>();
-    templates.put(byte[].class, bytesTemplate);
-    return new DeadLetterPublishingRecoverer(templates);
+    return new DeadLetterPublishingRecoverer(bytesTemplate);
   }
 
   /**

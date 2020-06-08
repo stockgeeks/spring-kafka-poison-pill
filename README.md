@@ -24,6 +24,8 @@ Using:
 
 Note Confluent Schema Registry is running on port: `8081` using Docker see: [docker-compose.yml](docker-compose.yml). 
 
+![](project-overview.png)
+
 ## Goal
 
 The goal of this example project is to show how protect your Kafka application against Deserialization exceptions (a.k.a. poison pills) leveraging Spring Boot and Spring Kafka.

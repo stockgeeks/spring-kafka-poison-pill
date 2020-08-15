@@ -1,6 +1,9 @@
 # Spring Kafka beyond the basics - Poison Pill
 
-Example project used for Conference talk and Confluent blog post.
+Example project used for my:
+
+* [Confluent Online talks session](https://www.confluent.io/online-talks/spring-kafka-beyond-the-basics/)
+* [Confluent blog post - Spring for Apache Kafka – Beyond the Basics: Can Your Kafka Consumers Handle a Poison Pill?](https://www.confluent.io/blog/spring-kafka-can-your-kafka-consumers-handle-a-poison-pill/)
 
 Using:
 
@@ -188,7 +191,7 @@ spring:
       spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
 ```
 
-### Publish poison pill(s) a dead letter topic and continue consuming
+### Publish poison pill(s) to a dead letter topic and continue consuming
 
 By configuring Spring Kafka's: `org.springframework.kafka.support.serializer.ErrorHandlingDeserializer` in combination
 with both the `org.springframework.kafka.listener.DeadLetterPublishingRecoverer` and `org.springframework.kafka.listener.SeekToCurrentErrorHandler` 

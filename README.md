@@ -3,7 +3,7 @@
 Example project used for my:
 
 * [Confluent Online talks session](https://www.confluent.io/online-talks/spring-kafka-beyond-the-basics/)
-* [Confluent blog post](https://www.confluent.io/online-talks/spring-kafka-beyond-the-basics/)
+* [Confluent blog post - Spring for Apache Kafka – Beyond the Basics: Can Your Kafka Consumers Handle a Poison Pill?](https://www.confluent.io/blog/spring-kafka-can-your-kafka-consumers-handle-a-poison-pill/)
 
 Using:
 

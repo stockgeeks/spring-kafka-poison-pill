@@ -39,10 +39,10 @@ This example project has 3 different branches:
 * `handle-poison-pill-log-and-continue-consuming` : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by simply logging the poison pill(s) and continue consuming.
 * `handle-poison-pill-dead-letter-topic-and-continue-consuming` : configuration to protect the consumer application (`stock-quote-consumer-avro`) against the poison pill scenario by publishing the poison pill(s) to a dead letter topic `stock-quotes-avro.DLT` and continue consuming.
 
-## Compile to the project
+## Build to the project
 
 ```
-./mvnw clean package
+./mvnw clean install
 ```
 
 ## Start / Stop Kafka & Zookeeper

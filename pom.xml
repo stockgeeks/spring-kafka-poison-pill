@@ -15,6 +15,7 @@
     <module>stock-quote-avro-model</module>
     <module>stock-quote-producer-avro</module>
     <module>stock-quote-consumer-avro</module>
+    <module>stock-quote-kafka-streams-avro</module>
   </modules>
 
 </project>

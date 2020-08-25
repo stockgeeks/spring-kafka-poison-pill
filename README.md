@@ -2,6 +2,7 @@
 
 Example project used for my:
 
+* [Kafka Summit 2020 lightning talk](https://events.kafka-summit.org/2020-schedule#element-custom-block-2986770903)
 * [Confluent Online talks session](https://www.confluent.io/online-talks/spring-kafka-beyond-the-basics/)
 * [Confluent blog post - Spring for Apache Kafka – Beyond the Basics: Can Your Kafka Consumers Handle a Poison Pill?](https://www.confluent.io/blog/spring-kafka-can-your-kafka-consumers-handle-a-poison-pill/)
 

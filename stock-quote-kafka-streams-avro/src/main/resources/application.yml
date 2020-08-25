@@ -13,8 +13,8 @@ spring:
       properties:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-        # This is the default: log, fail and stop processing records (stop stream)
-        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+        # Log and continue processing records (don't stop the stream)
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
     properties:
       schema.registry.url: http://localhost:8081
       # Tells Kafka / Schema Registry that we will be using a specific Avro type

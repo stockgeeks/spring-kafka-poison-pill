@@ -13,8 +13,11 @@ spring:
       properties:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
-        # This is the default: log, fail and stop processing records (stop stream)
-        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+        # org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler: calls a ConsumerRecordRecoverer and continues.
+        default.deserialization.exception.handler: org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
+        schema.registry.url: http://localhost:8081
+      bootstrap-servers: ${spring.kafka.bootstrap-servers}
+
     producer:
       # Important!
       # In case you publish to a 'dead letter topic' you consumer application becomes
@@ -27,10 +30,6 @@ spring:
       # (StockQuote type in this case) otherwise Kafka will expect GenericRecord to be used on the topic.
       specific.avro.reader: true
       bootstrap.servers: ${spring.kafka.bootstrap-servers}
-    # At application startup a missing topic on the broker will not fail the
-    # application startup
-    listener:
-      missing-topics-fatal: false
 
 management:
   endpoints:

@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: "stock-quote-kafka-streams"
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      application-id: ${spring.application.name}
+      client-id: ${spring.application.name}-stream
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
+        # This is the default: log, fail and stop processing records (stop stream)
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndFailExceptionHandler
+    producer:
+      # Important!
+      # In case you publish to a 'dead letter topic' you consumer application becomes
+      # a producer as well! So you need to specify the producer properties!
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+    properties:
+      schema.registry.url: http://localhost:8081
+      # Tells Kafka / Schema Registry that we will be using a specific Avro type
+      # (StockQuote type in this case) otherwise Kafka will expect GenericRecord to be used on the topic.
+      specific.avro.reader: true
+      bootstrap.servers: ${spring.kafka.bootstrap-servers}
+    # At application startup a missing topic on the broker will not fail the
+    # application startup
+    listener:
+      missing-topics-fatal: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+      region: us-west-1

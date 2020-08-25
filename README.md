@@ -20,6 +20,7 @@ Using:
 |-----------------------------------------------|------|-------|-------------------|--------------------------------------------------------------------------|
 | stock-quote-producer-avro                     | 8080 | YES  | stock-quotes-avro  | Simple producer of random stock quotes using Spring Kafka & Apache Avro. |
 | stock-quote-consumer-avro                     | 8082 | YES  | stock-quotes-avro  | Simple consumer of stock quotes using using Spring Kafka & Apache Avro.  |
+| stock-quote-kafka-streams-avro                | 8083 | YES  | stock-quotes-avro  | Simple Kafka Streams application using Spring Kafka & Apache Avro.  |
 
 | Module                                   | Description                                                             |
 |------------------------------------------|-------------------------------------------------------------------------|
@@ -200,4 +201,64 @@ Branch with complete example:
 
 ```
 git checkout handle-poison-pill-dead-letter-topic-and-continue-consuming
+```
+
+### Kafka Streams and Deserialization exceptions
+
+From the  [Kafka Streams documentation](https://kafka.apache.org/10/documentation/streams/developer-guide/config-streams.html#default-deserialization-exception-handler): 
+
+The default deserialization exception handler allows you to manage record exceptions that fail to deserialize. This can be caused by corrupt data, incorrect serialization logic, or unhandled record types. These exception handlers are available:
+
+* `LogAndContinueExceptionHandler`: This handler logs the deserialization exception and then signals the processing pipeline to continue processing more records. This log-and-skip strategy allows Kafka Streams to make progress instead of failing if there are records that fail to deserialize.
+
+* `LogAndFailExceptionHandler`: This handler logs the deserialization exception and then signals the processing pipeline to stop processing more records.
+
+
+```
+org.apache.kafka.common.errors.SerializationException: Unknown magic byte!
+
+2020-08-15 22:29:43.745 ERROR 37514 --- [-StreamThread-1] o.a.k.s.p.internals.StreamThread         : stream-thread [stock-quote-kafka-streams-stream-StreamThread-1] Encountered the following unexpected Kafka exception during processing, this usually indicate Streams internal errors:
+
+org.apache.kafka.streams.errors.StreamsException: Deserialization exception handler is set to fail upon a deserialization error. If you would rather have the streaming pipeline continue after a deserialization error, please set the default.deserialization.exception.handler appropriately.
+	at org.apache.kafka.streams.processor.internals.RecordDeserializer.deserialize(RecordDeserializer.java:80) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.RecordQueue.updateHead(RecordQueue.java:175) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.RecordQueue.addRawRecords(RecordQueue.java:112) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.PartitionGroup.addRawRecords(PartitionGroup.java:162) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.StreamTask.addRecords(StreamTask.java:765) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.StreamThread.addRecordsToTasks(StreamThread.java:943) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.StreamThread.runOnce(StreamThread.java:764) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.StreamThread.runLoop(StreamThread.java:697) ~[kafka-streams-2.5.1.jar:na]
+	at org.apache.kafka.streams.processor.internals.StreamThread.run(StreamThread.java:670) ~[kafka-streams-2.5.1.jar:na]
+Caused by: org.apache.kafka.common.errors.SerializationException: Unknown magic byte!
+
+2020-08-15 22:29:43.745  INFO 37514 --- [-StreamThread-1] o.a.k.s.p.internals.StreamThread         : stream-thread [stock-quote-kafka-streams-stream-StreamThread-1] State transition from RUNNING to PENDING_SHUTDOWN
+2020-08-15 22:29:43.745  INFO 37514 --- [-StreamThread-1] o.a.k.s.p.internals.StreamThread         : stream-thread [stock-quote-kafka-streams-stream-StreamThread-1] Shutting down
+```
+
+```yml
+spring:
+  kafka:
+    streams:
+      properties:
+        default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
+```
+
+```
+org.apache.kafka.common.errors.SerializationException: Unknown magic byte!
+
+2020-08-15 22:47:50.775  WARN 39647 --- [-StreamThread-1] o.a.k.s.p.internals.RecordDeserializer   : stream-thread [stock-quote-kafka-streams-stream-StreamThread-1] task [0_0] Skipping record due to deserialization error. topic=[stock-quotes-avro] partition=[0] offset=[771]
+```
+
+Spring Kafka RecoveringDeserializationExceptionHandler:
+
+Spring Kafka provides a the org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler (implementation of Kafka Streams DeserializationExceptionHandler) to be able to publish to a Dead letter topic deserialization exception occurs.
+
+The RecoveringDeserializationExceptionHandler is configured with a ConsumerRecordRecoverer implementation. Spring Kafka provides the DeadLetterPublishingRecoverer which sends the failed record to a dead-letter topic.
+
+```yml
+spring:
+  kafka:
+    streams:
+      properties:
+        default.deserialization.exception.handler: org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
 ```
